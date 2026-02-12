@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Navbar } from "@/components/navbar";
@@ -8,6 +9,13 @@ import { Navbar } from "@/components/navbar";
 interface SignInData {
   email: "",
   password: "",
+}
+
+interface CustomJwtPayload {
+  sub: string; // email
+  name: string;
+  role: string;
+  exp: number;
 }
 
 export default function SignInPage() {
@@ -37,7 +45,7 @@ export default function SignInPage() {
       const API_URL = process.env.NEXT_PUBLIC_API_URL;
       
       // Seguindo o padrão REST, assumindo que o endpoint seja /login
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -57,8 +65,19 @@ export default function SignInPage() {
       // Idealmente, o token deve ser armazenado em HttpOnly Cookies pelo backend.
       if (data.token) {
         localStorage.setItem("token", data.token);
-        if (data.user) {
-            localStorage.setItem("user", JSON.stringify(data.user));
+        try {
+          //decodifica o token para extrair os dados
+          const decoded = jwtDecode<CustomJwtPayload>(data.token);
+          
+          const userData = {
+            name: decoded.name,
+            email: decoded.sub,
+            role: decoded.role
+          };
+
+          localStorage.setItem("user", JSON.stringify(userData));
+        } catch (error) {
+          console.error("Erro ao decodificar token:", error);
         }
       }
 

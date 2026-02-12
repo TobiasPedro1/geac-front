@@ -37,6 +37,7 @@ public class AuthService{
     }
 
     public AuthResponseDTO login(AuthRequestDTO data) {
+
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
@@ -44,7 +45,6 @@ public class AuthService{
 
         return new AuthResponseDTO(token);
     }
-
     
     public void logout() {
         // Em uma aplicação com sessões stateless (JWT), o logout é feito principalmente no cliente
