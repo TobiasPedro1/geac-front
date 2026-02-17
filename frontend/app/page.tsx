@@ -1,9 +1,6 @@
-import { Navbar } from "@/components/navbar";
-
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black font-sans">
-      <Navbar />
       <main className="flex flex-1 items-center justify-center p-4">
         <div className="text-center">
           <h1 className="text-4xl font-bold text-zinc-900 dark:text-white mb-4">

@@ -3,15 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Navbar } from "@/components/navbar";
-import { SignUpFormData } from "@/types/signUpFormData";
+import { authService } from "@/services/authService";
+import { SignUpData } from "@/types/auth";
+import { LoadingButton } from "@/components/LoadingButton";
 
 export default function SignUpPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const [formData, setFormData] = useState<SignUpFormData>({
+  const [formData, setFormData] = useState<SignUpData>({
     name: "",
     email: "",
     password: "",
@@ -34,29 +35,12 @@ export default function SignUpPage() {
     setError(null);
 
     try {
-      const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-      const response = await fetch(`${API_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(
-          data.message || "Erro ao criar conta. Tente novamente.",
-        );
-      }
-
+      await authService.register(formData);
       alert("Conta criada com sucesso!");
       router.push("/");
     } catch (error) {
       console.error("Erro no cadastro:", error);
       setError((error as Error)?.message || "Ocorreu um erro inesperado.");
-      alert((error as Error)?.message || "Ocorreu um erro inesperado.");
     } finally {
       setIsLoading(false);
     }
@@ -64,8 +48,6 @@ export default function SignUpPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-zinc-50 dark:bg-black font-sans">
-      <Navbar />
-
       <main className="flex flex-1 items-center justify-center p-4">
         <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-lg shadow-md p-8 border border-zinc-200 dark:border-zinc-800">
           <h1 className="text-2xl font-bold mb-6 text-center text-zinc-900 dark:text-white">
@@ -95,7 +77,7 @@ export default function SignUpPage() {
                 onChange={handleChange}
                 placeholder="Seu nome completo"
                 disabled={isLoading}
-                className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
               />
             </div>
             <div>
@@ -114,7 +96,7 @@ export default function SignUpPage() {
                 onChange={handleChange}
                 placeholder="seu@email.com"
                 disabled={isLoading}
-                className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
               />
             </div>
             <div>
@@ -133,7 +115,7 @@ export default function SignUpPage() {
                 onChange={handleChange}
                 placeholder="••••••••"
                 disabled={isLoading}
-                className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
               />
             </div>
             <div>
@@ -149,20 +131,21 @@ export default function SignUpPage() {
                 value={formData.role}
                 onChange={handleChange}
                 disabled={isLoading}
-                className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+                className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-colors bg-white dark:bg-zinc-900"
               >
                 <option value="STUDENT">Estudante</option>
                 <option value="PROFESSOR">Professor</option>
               </select>
             </div>
 
-            <button
+            <LoadingButton
               type="submit"
-              disabled={isLoading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-2 px-4 rounded-md transition duration-200 mt-6 flex items-center justify-center"
+              isLoading={isLoading}
+              loadingText="Registrando..."
+              className="w-full mt-6"
             >
-              {isLoading ? "Registrando..." : "Registrar"}
-            </button>
+              Registrar
+            </LoadingButton>
           </form>
 
           <p className="mt-4 text-center text-sm text-zinc-600 dark:text-zinc-400">
