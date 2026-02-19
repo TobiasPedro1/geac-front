@@ -1,6 +1,5 @@
 import { cookies } from "next/headers";
 import { Event } from "@/types/event";
-import { mock } from "node:test";
 import { mockEvents } from "@/data/mockData";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
