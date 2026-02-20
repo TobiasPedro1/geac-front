@@ -5,10 +5,14 @@ import { loginAction } from "@/app/actions/auth";
 import { SignInData } from "@/types/auth";
 import { LoadingButton } from "@/components/LoadingButton";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function SignInPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const { login } = useAuth(); // ✅ Pega função login do contexto
 
   const [formData, setFormData] = useState<SignInData>({
     email: "",
@@ -16,18 +20,46 @@ export default function SignInPage() {
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (error) {
+      setError(null);
+    }
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
 
-    const result = await loginAction(formData);
+    try {
+      const result = await loginAction(formData);
 
-    if (result?.error) {
-      setError(result.error);
+      if (result?.error) {
+        setError(result.error);
+        setIsLoading(false);
+        return;
+      }
+
+      // ✅ SOLUÇÃO: Atualiza o contexto ANTES de redirecionar
+      login(); // Força o AuthContext a revalidar
+      
+      // Pequeno delay para garantir que o contexto atualizou
+      await new Promise(resolve => setTimeout(resolve, 100));
+      
+      // Agora sim, redireciona
+      router.push("/");
+      router.refresh();
+      
+    } catch (error) {
+      // redirect() do Next.js joga um erro especial
+      if (error && typeof error === 'object' && 'digest' in error) {
+        // É o erro do redirect - força atualização do contexto
+        login();
+        return;
+      }
+      
+      console.error('Erro no login:', error);
+      setError('Erro inesperado ao fazer login');
       setIsLoading(false);
     }
   };
@@ -46,7 +78,10 @@ export default function SignInPage() {
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center">
+            <div 
+              className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded text-sm text-center animate-in fade-in slide-in-from-top-2 duration-300"
+              role="alert"
+            >
               {error}
             </div>
           )}
@@ -68,6 +103,7 @@ export default function SignInPage() {
                 onChange={handleChange}
                 placeholder="seu@email.com"
                 disabled={isLoading}
+                autoComplete="email"
                 className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
               />
             </div>
@@ -88,6 +124,7 @@ export default function SignInPage() {
                 onChange={handleChange}
                 placeholder="••••••••"
                 disabled={isLoading}
+                autoComplete="current-password"
                 className="w-full px-3 py-2 border border-zinc-300 dark:border-zinc-700 rounded-md bg-transparent focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 transition-colors"
               />
             </div>

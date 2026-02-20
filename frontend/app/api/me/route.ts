@@ -14,6 +14,17 @@ export async function GET() {
   try {
     const decoded: CustomJwtPayload = jwtDecode(token);
 
+    // ✅ MELHORIA: Validar expiração do token
+    const now = Math.floor(Date.now() / 1000); // Unix timestamp em segundos
+    
+    if (decoded.exp && decoded.exp < now) {
+      // Token expirado!
+      return NextResponse.json(
+        { user: null, error: "Token expirado" }, 
+        { status: 401 }
+      );
+    }
+
     const user = {
       name: decoded.name,
       email: decoded.sub,
@@ -22,7 +33,7 @@ export async function GET() {
 
     return NextResponse.json({ user });
   } catch (error) {
-    console.error(error);
+    console.error("Erro ao decodificar token:", error);
     return NextResponse.json({ user: null }, { status: 401 });
   }
 }
