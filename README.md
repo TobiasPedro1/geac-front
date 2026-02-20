@@ -1,125 +1,36 @@
-📅 Sistema de Gestão de Eventos Universitários
----
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## Getting Started
 
-👥 Integrantes
----
+First, run the development server:
 
-  Dimas Celestino - Desenvolvedor(a)
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-  Douglas Henrique - Desenvolvedor(a)
-  
-  José Portela - Desenvolvedor(a)
-  
-  Julio Neto - Desenvolvedor(a)
-  
-  Pedro Tobias - Desenvolvedor(a)
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-  Rener Tomé - Desenvolvedor(a)
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-<br>
-  
-📃 Sobre o Projeto
----
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-  Este projeto consiste na implementação de uma plataforma completa para Gestão de Eventos Universitários, desenvolvido como requisito avaliativo para a disciplina de Engenharia de Software, ministrada pela Professora Thaís Alves Burity Rocha na UFAPE (Universidade Federal do Agreste de Pernambuco).
-  
-  O objetivo é criar um ecossistema que centralize a divulgação, organização e inscrição em eventos acadêmicos, conectando departamentos, centros acadêmicos e grupos estudantis com a comunidade universitária (alunos e professores). A plataforma resolve o problema da       fragmentação de informações, facilitando o acesso à cultura e conhecimento complementar.
-  
-<br>
+## Learn More
 
-📍 Objetivos e Funcionalidades
----
+To learn more about Next.js, take a look at the following resources:
 
-  O sistema visa aumentar a visibilidade das atividades acadêmicas e simplificar a burocracia de gestão. As principais funcionalidades incluem:
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-<br>
-  
-🎓 Para Organizadores (Departamentos/C.A.s):
----
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-  - Cadastro detalhado de eventos (palestras, seminários, feiras, festivais).
-  
-  - Definição de cronograma, palestrantes, local e requisitos.
-  
-  - Gerenciamento de inscritos e lista de presença.
-  
-  - Emissão automática de certificados de participação.
-  
-  - Coleta de feedback pós-evento para melhoria contínua.
-    
-<br>
+## Deploy on Vercel
 
-🙋‍♂️ Para Participantes (Alunos/Professores):
----
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-  - Busca avançada de eventos por categoria, data, campus ou palavras-chave.
-  
-  - Inscrição rápida e facilitada.
-  
-  - Acesso ao histórico de participações e certificados.
-
-<br>
-
-🛠️ Tecnologias Utilizadas
----
-
-O projeto é construído utilizando uma arquitetura moderna, separando o Back-end (API Rest) do Front-end.
-
-Back-end (API)
-  
-  - Java 25 (Preview/Latest Features)
-  
-  - Spring Boot - Framework base para a aplicação.
-  
-  - Spring Security - Para autenticação e autorização.
-  
-  - JPA / Hibernate - Persistência de dados.
-
-Front-end (Cliente Web)
-  
-  - React - Biblioteca para construção de interfaces.
-  
-  - Next.js - Framework React para produção.
-  
-  - Tailwind CSS - Para estilização.
-
-Ferramentas & DevOps
-  
-  - Git & GitHub - Versionamento de código.
-  
-  - Docker - Containerização dos serviços.
-  
-  - PostgreSQL - Banco de dados relacional.
-
-<br>
-  
-🚀 Como Executar o Projeto
----
-
-  Pré-requisitos
-  
-  - Java JDK 25 instalado.
-  
-  - Node.js (versão LTS ou superior).
-  
-  - Docker (Opcional, mas recomendado para o Banco de Dados).
-
-  Passos:
-
-  1. Clone o repositório:
-     
-         git clone https://github.com/GestaoDeEventosAcademicosECulturais/geac.git
-
- 2. Back-end:
-
-        cd backend
-        ./mvnw spring-boot:run
-
-3. Front-end:
-
-        cd frontend
-        npm install
-        npm run dev
-
-4: Acesse a aplicação em http://localhost:3000
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
