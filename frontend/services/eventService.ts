@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { Event } from "@/types/event";
+import { Event, EventResponseDTO } from "@/types/event";
 import { mockEvents } from "@/data/mockData";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
@@ -8,10 +8,12 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
  * Mapeia o DTO retornado pelo backend para o tipo Event do frontend.
  * Campos que o backend não possui recebem valores padrão.
  */
-function mapBackendToEvent(dto: any): Event {
+function mapBackendToEvent(dto: EventResponseDTO): Event {
   // Extrai a data (YYYY-MM-DD) do startTime (ex: "2026-03-15T14:00:00")
   const startDate = dto.startTime ? dto.startTime.split("T")[0] : "";
-  const startHour = dto.startTime ? dto.startTime.split("T")[1]?.substring(0, 5) : "";
+  const startHour = dto.startTime
+    ? dto.startTime.split("T")[1]?.substring(0, 5)
+    : "";
   const endHour = dto.endTime ? dto.endTime.split("T")[1]?.substring(0, 5) : "";
 
   return {
@@ -22,7 +24,9 @@ function mapBackendToEvent(dto: any): Event {
     date: startDate,
     startTime: startHour,
     endTime: endHour,
-    location: dto.onlineLink ? "Evento Online" : (dto.location?.name ?? "Local Indefinido"),
+    location: dto.onlineLink
+      ? "Evento Online"
+      : (dto.location?.name ?? "Local Indefinido"),
     campus: (dto.location?.city?.toLowerCase() || "ondina") as Event["campus"],
     speakers: dto.speakers,
     capacity: dto.maxCapacity ?? 0,
@@ -54,11 +58,12 @@ export const eventService = {
     });
 
     if (!res.ok) {
-      console.warn("Falha ao buscar eventos. Retornando dados mockados.");
-      return mockEvents;
+      throw new Error("Falha ao buscar eventos");
+      // console.warn("Falha ao buscar eventos. Retornando dados mockados.");
+      // return mockEvents;
     }
 
-    const data: any[] = await res.json();
+    const data = await res.json();
     return data.map(mapBackendToEvent);
   },
 
@@ -78,7 +83,9 @@ export const eventService = {
     if (!res.ok) {
       const mockEvent = mockEvents.find((event) => event.id === id);
       if (mockEvent) {
-        console.warn(`Falha ao buscar evento ${id}. Retornando dados mockados.`);
+        console.warn(
+          `Falha ao buscar evento ${id}. Retornando dados mockados.`,
+        );
         return mockEvent;
       }
       throw new Error("Evento não encontrado");

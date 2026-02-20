@@ -1,9 +1,12 @@
 import { RoleGuard } from "@/components/auth/RoleGuard";
 import CreateEventForm from "@/app/events/CreateEventForm";
-import { getCategories, getLocations, getRequirements } from "@/app/actions/domainActions";
+import {
+  getCategories,
+  getLocations,
+  getRequirements,
+} from "@/app/actions/domainActions";
 
 export default async function NewEventPage() {
-
   const categories = await getCategories();
   const locations = await getLocations();
   const requirements = await getRequirements();
@@ -20,12 +23,12 @@ export default async function NewEventPage() {
               Preencha os dados abaixo para divulgar um novo evento acadêmico.
             </p>
           </div>
-          
+
           {/* Passamos as listas reais como propriedades para o form */}
-          <CreateEventForm 
-            categories={categories} 
-            locations={locations} 
-            requirements={requirements} 
+          <CreateEventForm
+            categories={categories}
+            locations={locations}
+            requirements={requirements}
           />
         </div>
       </div>

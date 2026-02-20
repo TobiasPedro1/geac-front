@@ -10,7 +10,11 @@ interface CreateEventFormProps {
   locations: { id: number; name: string }[];
   requirements: { id: number; description: string }[];
 }
-export default function CreateEventForm({ categories = [], locations = [], requirements = [] }: CreateEventFormProps) {
+export default function CreateEventForm({
+  categories = [],
+  locations = [],
+  requirements = [],
+}: Readonly<CreateEventFormProps>) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -22,7 +26,7 @@ export default function CreateEventForm({ categories = [], locations = [], requi
     startTime: "",
     endTime: "",
     categoryId: categories[0]?.id.toString() || "1",
-    locationId: locations[0]?.id.toString() || "1", 
+    locationId: locations[0]?.id.toString() || "1",
     requirementId: requirements[0]?.id.toString() || "1",
     workloadHours: "",
     maxCapacity: "",
@@ -30,7 +34,11 @@ export default function CreateEventForm({ categories = [], locations = [], requi
     isOnline: false,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     const { name, value, type } = e.target;
     if (type === "checkbox") {
       const checked = (e.target as HTMLInputElement).checked;
@@ -56,7 +64,9 @@ export default function CreateEventForm({ categories = [], locations = [], requi
         workloadHours: Number(formData.workloadHours),
         maxCapacity: Number(formData.maxCapacity),
         onlineLink: formData.isOnline ? formData.onlineLink : undefined,
-        locationId: !formData.isOnline ? Number(formData.locationId) : undefined,
+        locationId: !formData.isOnline
+          ? Number(formData.locationId)
+          : undefined,
       };
 
       const result = await createEventAction(payload);
@@ -64,78 +74,166 @@ export default function CreateEventForm({ categories = [], locations = [], requi
       if (result?.error) {
         throw new Error(result.error);
       }
-
+      await new Promise((res) => setTimeout(res, 1_000));
       router.push("/events");
       router.refresh();
-      
-    } catch (err: any) {
-      setError(err.message || "Erro ao criar evento");
+    } catch (err) {
+      setError((err as Error).message || "Erro ao criar evento");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-md">
-      {error && <div className="text-red-500 p-2 bg-red-50 rounded">{error}</div>}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6 max-w-2xl mx-auto bg-white dark:bg-zinc-800 p-6 rounded-lg shadow-md"
+    >
+      {error && (
+        <div className="text-red-500 p-2 bg-red-50 rounded">{error}</div>
+      )}
 
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-gray-200">Título</label>
-        <input name="title" required value={formData.title} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600" />
+        <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+          Título
+        </label>
+        <input
+          name="title"
+          required
+          value={formData.title}
+          onChange={handleChange}
+          className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+        />
       </div>
 
       <div>
-        <label className="block text-sm font-medium mb-1 dark:text-gray-200">Descrição</label>
-        <textarea name="description" required rows={3} value={formData.description} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600" />
+        <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+          Descrição
+        </label>
+        <textarea
+          name="description"
+          required
+          rows={3}
+          value={formData.description}
+          onChange={handleChange}
+          className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+        />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-200">Início</label>
-            <input type="datetime-local" name="startTime" required value={formData.startTime} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600 dark:color-white" />
+          <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+            Início
+          </label>
+          <input
+            type="datetime-local"
+            name="startTime"
+            required
+            value={formData.startTime}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600 dark:color-white"
+          />
         </div>
         <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-200">Fim</label>
-            <input type="datetime-local" name="endTime" required value={formData.endTime} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600 dark:color-white" />
+          <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+            Fim
+          </label>
+          <input
+            type="datetime-local"
+            name="endTime"
+            required
+            value={formData.endTime}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600 dark:color-white"
+          />
         </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-200">Categoria</label>
-          <select name="categoryId" value={formData.categoryId} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600">
+          <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+            Categoria
+          </label>
+          <select
+            name="categoryId"
+            value={formData.categoryId}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+          >
             {categories.map((cat) => (
-              <option key={cat.id} value={cat.id}>{cat.name}</option>
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
             ))}
           </select>
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-200">Requisito do Evento</label>
-          <select name="requirementId" value={formData.requirementId} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600">
+          <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+            Requisito do Evento
+          </label>
+          <select
+            name="requirementId"
+            value={formData.requirementId}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+          >
             {requirements.map((req) => (
-              <option key={req.id} value={req.id}>{req.description}</option>
+              <option key={req.id} value={req.id}>
+                {req.description}
+              </option>
             ))}
           </select>
         </div>
       </div>
 
       <div className="flex items-center gap-2 mb-4">
-        <input type="checkbox" id="isOnline" name="isOnline" checked={formData.isOnline} onChange={handleChange} className="w-4 h-4" />
-        <label htmlFor="isOnline" className="text-sm font-medium dark:text-gray-200">Este evento será Online</label>
+        <input
+          type="checkbox"
+          id="isOnline"
+          name="isOnline"
+          checked={formData.isOnline}
+          onChange={handleChange}
+          className="w-4 h-4"
+        />
+        <label
+          htmlFor="isOnline"
+          className="text-sm font-medium dark:text-gray-200"
+        >
+          Este evento será Online
+        </label>
       </div>
 
       {formData.isOnline ? (
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-200">Link do Evento (Online)</label>
-          <input type="url" name="onlineLink" required={formData.isOnline} value={formData.onlineLink} onChange={handleChange} placeholder="https://meet.google.com/..." className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600" />
+          <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+            Link do Evento (Online)
+          </label>
+          <input
+            type="url"
+            name="onlineLink"
+            required={formData.isOnline}
+            value={formData.onlineLink}
+            onChange={handleChange}
+            placeholder="https://meet.google.com/..."
+            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+          />
         </div>
       ) : (
         <div>
-          <label className="block text-sm font-medium mb-1 dark:text-gray-200">Local (Campus)</label>
-          <select name="locationId" value={formData.locationId} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600">
+          <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+            Local (Campus)
+          </label>
+          <select
+            name="locationId"
+            value={formData.locationId}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+          >
             {locations.map((loc) => (
-              <option key={loc.id} value={loc.id}>{loc.name}</option>
+              <option key={loc.id} value={loc.id}>
+                {loc.name}
+              </option>
             ))}
           </select>
         </div>
@@ -143,16 +241,40 @@ export default function CreateEventForm({ categories = [], locations = [], requi
 
       <div className="grid grid-cols-2 gap-4">
         <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-200">Carga Horária (h)</label>
-            <input type="number" name="workloadHours" required min="1" value={formData.workloadHours} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600" />
+          <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+            Carga Horária (h)
+          </label>
+          <input
+            type="number"
+            name="workloadHours"
+            required
+            min="1"
+            value={formData.workloadHours}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+          />
         </div>
         <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-200">Capacidade Máxima</label>
-            <input type="number" name="maxCapacity" required min="1" value={formData.maxCapacity} onChange={handleChange} className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600" />
+          <label className="block text-sm font-medium mb-1 dark:text-gray-200">
+            Capacidade Máxima
+          </label>
+          <input
+            type="number"
+            name="maxCapacity"
+            required
+            min="1"
+            value={formData.maxCapacity}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-zinc-700 dark:border-zinc-600"
+          />
         </div>
       </div>
-      
-      <button type="submit" disabled={loading} className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium disabled:opacity-50 transition-colors">
+
+      <button
+        type="submit"
+        disabled={loading}
+        className="w-full py-2 px-4 bg-blue-600 hover:bg-blue-700 text-white rounded font-medium disabled:opacity-50 transition-colors"
+      >
         {loading ? "Criando..." : "Cadastrar Evento"}
       </button>
     </form>

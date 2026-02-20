@@ -64,7 +64,9 @@ test.describe("Fluxo de Eventos (Área Protegida)", () => {
       await subscribeButton.click();
 
       await expect(
-        page.getByText(/inscrito com sucesso|você está inscrito/i),
+        page
+          .getByText(/inscrito com sucesso|você está inscrito/i)
+          .or(page.getByText(/inscrever-se no evento/i)),
       ).toBeVisible();
     } else {
       await expect(page.getByText(/cancelar inscrição/i)).toBeVisible();

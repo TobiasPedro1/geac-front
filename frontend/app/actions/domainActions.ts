@@ -22,6 +22,12 @@ async function fetchDomain(endpoint: string) {
   }
 }
 
-export async function getCategories() { return fetchDomain("/categories"); }
-export async function getLocations() { return fetchDomain("/locations"); }
-export async function getRequirements() { return fetchDomain("/requirements"); }
+export async function getCategories() {
+  return fetchDomain("/categories");
+}
+export async function getLocations() {
+  return fetchDomain("/locations");
+}
+export async function getRequirements() {
+  return fetchDomain("/requirements");
+}

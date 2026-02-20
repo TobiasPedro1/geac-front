@@ -25,14 +25,13 @@ export async function createEventAction(data: EventRequestDTO) {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      return { 
+      return {
         success: false,
-        error: errorData.message || "Erro ao criar evento." 
+        error: errorData.message || "Erro ao criar evento.",
       };
     }
 
     return { success: true };
-
   } catch (error) {
     console.error("Erro na criação do evento:", error);
     return { success: false, error: "Erro de conexão com o servidor." };

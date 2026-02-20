@@ -13,8 +13,44 @@ vi.mock("next/headers", () => ({
 global.fetch = vi.fn();
 
 const mockEventsResponse = [
-  { id: "1", title: "Evento 1" },
-  { id: "2", title: "Evento 2" },
+  {
+    id: "1",
+    title: "Evento 1",
+    description: "",
+    category: "outro",
+    date: "",
+    startTime: "",
+    endTime: "",
+    location: "Local Indefinido",
+    campus: "ondina",
+    speakers: undefined,
+    capacity: 0,
+    registered: 0,
+    requirements: undefined,
+    organizer: "",
+    organizerType: "Professor",
+    tags: undefined,
+    isRegistered: false,
+  },
+  {
+    id: "2",
+    title: "Evento 2",
+    description: "",
+    category: "outro",
+    date: "",
+    startTime: "",
+    endTime: "",
+    location: "Local Indefinido",
+    campus: "ondina",
+    speakers: undefined,
+    capacity: 0,
+    registered: 0,
+    requirements: undefined,
+    organizer: "",
+    organizerType: "Professor",
+    tags: undefined,
+    isRegistered: false,
+  },
 ];
 
 describe("eventService", () => {
@@ -29,6 +65,8 @@ describe("eventService", () => {
     });
 
     const events = await eventService.getAllEvents();
+
+    console.log(events[1]);
 
     expect(events).toEqual(mockEventsResponse);
 
@@ -54,7 +92,25 @@ describe("eventService", () => {
   });
 
   it("getEventById deve buscar um evento específico pelo ID", async () => {
-    const mockEvent = { id: "123", title: "Evento Único" };
+    const mockEvent = {
+      id: "123",
+      title: "Evento Único",
+      description: "",
+      category: "outro",
+      date: "",
+      startTime: "",
+      endTime: "",
+      location: "Local Indefinido",
+      campus: "ondina",
+      speakers: undefined,
+      capacity: 0,
+      registered: 0,
+      requirements: undefined,
+      organizer: "",
+      organizerType: "Professor",
+      tags: undefined,
+      isRegistered: false,
+    };
 
     (global.fetch as unknown as Mock).mockResolvedValue({
       ok: true,
@@ -62,6 +118,8 @@ describe("eventService", () => {
     });
 
     const event = await eventService.getEventById("123");
+
+    console.log(event);
 
     expect(event).toEqual(mockEvent);
     expect(global.fetch).toHaveBeenCalledWith(
