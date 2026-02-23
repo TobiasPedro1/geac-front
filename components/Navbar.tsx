@@ -103,8 +103,10 @@ export function Navbar() {
 
   // ✅ Verifica se link está ativo
   const isActiveLink = (href: string) => {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
+    if (href === "/") {
+      return pathname === "/";
+    }
+    return pathname === href; //|| pathname.startsWith(href + "/");
   };
 
   return (
