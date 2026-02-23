@@ -13,7 +13,8 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "test:playwright": "npx playwright test",
-    "test:playwright-ui": "npx playwright test --ui"
+    "test:playwright-ui": "npx playwright test --ui",
+    "prepare": "husky"
   },
   "dependencies": {
     "cookies-next": "^6.1.1",
@@ -40,6 +41,7 @@
     "@vitest/coverage-v8": "^4.0.18",
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
+    "husky": "^9.1.7",
     "jsdom": "^28.1.0",
     "tailwindcss": "^4",
     "typescript": "^5",

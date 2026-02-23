@@ -2,9 +2,9 @@ name: Next.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build-and-test:
@@ -17,8 +17,8 @@ jobs:
       - name: Configurar Node.js 24.13.0
         uses: actions/setup-node@v4
         with:
-          node-version: '24.13.0'
-          cache: 'npm'
+          node-version: "24.13.0"
+          cache: "npm"
 
       - name: Cache do Next.js
         uses: actions/cache@v4
@@ -34,8 +34,8 @@ jobs:
       - name: Checar Linting
         run: npm run lint
 
-    #   - name: Rodar os Testes
-        # run: npm test
+      - name: Rodar os Testes
+        run: npm test
 
       - name: Build da aplicação Next.js
         run: npm run build
