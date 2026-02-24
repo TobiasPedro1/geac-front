@@ -7,7 +7,7 @@ export interface SignUpData {
   name: string;
   email: string;
   password: string;
-  role: "STUDENT" | "PROFESSOR";
+  role: "STUDENT" | "PROFESSOR" | "ADMIN";
 }
 
 export interface AuthResponse {
