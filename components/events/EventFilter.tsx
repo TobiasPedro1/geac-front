@@ -11,6 +11,7 @@ interface EventFilterProps {
   setSelectedCampus: (value: string) => void;
   selectedDate: string;
   setSelectedDate: (value: string) => void;
+  availableCategories: string[];
 }
 
 export function EventFilter({
@@ -22,6 +23,7 @@ export function EventFilter({
   setSelectedCampus,
   selectedDate,
   setSelectedDate,
+  availableCategories,
 }: Readonly<EventFilterProps>) {
   return (
     <div className="bg-white dark:bg-zinc-900 p-6 rounded-xl shadow-sm border border-zinc-200 dark:border-zinc-800 mb-8">
@@ -62,15 +64,11 @@ export function EventFilter({
             className="w-full px-3 py-2 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-shadow"
           >
             <option value="">Todas as Categorias</option>
-            <option value="palestra">Palestra</option>
-            <option value="seminario">Seminário</option>
-            <option value="cultural">Cultural</option>
-            <option value="feira">Feira</option>
-            <option value="workshop">Workshop</option>
-            <option value="livre">Livre</option>
-            <option value="conferencia">Conferência</option>
-            <option value="festival">Festival</option>
-            <option value="outro">Outro</option>
+            {availableCategories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat.charAt(0).toUpperCase() + cat.slice(1)}
+              </option>
+            ))}
           </select>
         </div>
 

@@ -17,6 +17,7 @@ describe("EventFilter Component", () => {
         setSelectedCampus={vi.fn()}
         selectedDate=""
         setSelectedDate={vi.fn()}
+        availableCategories={["palestra", "seminario", "cultural", "workshop"]}
       />,
     );
 
@@ -45,6 +46,7 @@ describe("EventFilter Component", () => {
         setSelectedCampus={mockSetSelectedCampus}
         selectedDate=""
         setSelectedDate={mockSetSelectedDate}
+        availableCategories={["palestra", "seminario", "cultural", "workshop"]}
       />,
     );
 

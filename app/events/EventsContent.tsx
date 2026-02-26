@@ -21,6 +21,13 @@ export default function EventsContent({
     "proximos" | "disponiveis" | "todos"
   >("proximos");
 
+  const availableCategories = useMemo(() => {
+    const categories = new Set(
+      initialEvents.map((event) => event.category).filter(Boolean),
+    );
+    return Array.from(categories).sort();
+  }, [initialEvents]);
+
   const filteredEvents = useMemo(() => {
     return initialEvents.filter((event) => {
       const searchLower = searchTerm.toLowerCase();
@@ -88,6 +95,7 @@ export default function EventsContent({
           setSelectedCampus={setSelectedCampus}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
+          availableCategories={availableCategories}
         />
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
