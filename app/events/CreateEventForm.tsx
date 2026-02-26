@@ -35,6 +35,7 @@ export default function CreateEventForm({
     maxCapacity: "",
     onlineLink: "",
     isOnline: false,
+    speakers: [] as number[],
   });
 
   const handleChange = (
@@ -84,10 +85,11 @@ export default function CreateEventForm({
         workloadHours: Number(formData.workloadHours),
         maxCapacity: Number(formData.maxCapacity),
         onlineLink: formData.isOnline ? formData.onlineLink : undefined,
-        locationId: !formData.isOnline
-          ? Number(formData.locationId)
-          : undefined,
+        locationId: Number.isNaN(Number(formData.locationId))
+          ? 1
+          : Number(formData.locationId),
         tags: formData.tags.map(Number),
+        speakers: formData.speakers.length > 0 ? formData.speakers : [1, 2, 3],
       };
 
       const result = await createEventAction(payload);

@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach, Mock } from "vitest";
 import { eventService } from "../eventService";
+import { on } from "events";
 
 vi.mock("next/headers", () => ({
   cookies: () => ({
@@ -32,6 +33,7 @@ const mockEventsResponse = [
     organizerType: "Professor",
     tags: undefined,
     isRegistered: false,
+    onlineLink: "",
   },
   {
     id: "2",
@@ -52,6 +54,7 @@ const mockEventsResponse = [
     organizerType: "Professor",
     tags: undefined,
     isRegistered: false,
+    onlineLink: "",
   },
 ];
 
@@ -111,6 +114,7 @@ describe("eventService", () => {
       organizerType: "Professor",
       tags: undefined,
       isRegistered: false,
+      onlineLink: "",
     };
 
     (global.fetch as unknown as Mock).mockResolvedValue({

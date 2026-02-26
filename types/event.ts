@@ -29,6 +29,7 @@ export interface Event {
   image?: string;
   tags: string[];
   isRegistered?: boolean;
+  onlineLink: string;
 }
 
 export interface EventRequestDTO {
@@ -43,6 +44,7 @@ export interface EventRequestDTO {
   maxCapacity: number;
   onlineLink?: string;
   tags: number[];
+  speakers: number[];
 }
 
 export interface LocationResponseDTO {

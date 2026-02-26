@@ -24,6 +24,7 @@ export const mockEvents: Event[] = [
     organizerType: "Departamento",
     tags: ["ia", "tecnologia", "carreira", "inovação"],
     isRegistered: true,
+    onlineLink: "https://ufba.br/eventos/ia-futuro-trabalho",
   },
   {
     id: "2",
@@ -48,6 +49,7 @@ export const mockEvents: Event[] = [
     organizerType: "Grupo Estudantil",
     tags: ["cultura", "internacional", "festival", "diversidade"],
     isRegistered: true,
+    onlineLink: "https://ufba.br/eventos/festival-cultural",
   },
   {
     id: "3",
@@ -74,6 +76,7 @@ export const mockEvents: Event[] = [
     organizerType: "Centro Acadêmico",
     tags: ["clima", "meio ambiente", "sustentabilidade", "ciência"],
     isRegistered: false,
+    onlineLink: "https://ufba.br/eventos/clima-sustentabilidade",
   },
   {
     id: "4",
@@ -100,6 +103,7 @@ export const mockEvents: Event[] = [
     organizerType: "Departamento",
     tags: ["carreira", "tecnologia", "networking", "empregos"],
     isRegistered: false,
+    onlineLink: "https://ufba.br/eventos/feira-carreiras",
   },
   {
     id: "5",
@@ -127,6 +131,7 @@ export const mockEvents: Event[] = [
     organizerType: "Grupo Estudantil",
     tags: ["marketing", "digital", "workshop", "negócios"],
     isRegistered: false,
+    onlineLink: "https://ufba.br/eventos/workshop-marketing-digital",
   },
   {
     id: "6",
@@ -151,6 +156,7 @@ export const mockEvents: Event[] = [
     organizerType: "Centro Acadêmico",
     tags: ["bem-estar", "saúde mental", "estudantes", "apoio"],
     isRegistered: false,
+    onlineLink: "https://ufba.br/eventos/seminario-saude-mental",
   },
   {
     id: "7",
@@ -175,6 +181,7 @@ export const mockEvents: Event[] = [
     organizerType: "Departamento",
     tags: ["música", "rock", "performance", "artes"],
     isRegistered: false,
+    onlineLink: "https://ufba.br/eventos/noite-rock",
   },
   {
     id: "8",
@@ -199,5 +206,6 @@ export const mockEvents: Event[] = [
     organizerType: "Grupo Estudantil",
     tags: ["blockchain", "criptomoedas", "finanças", "tecnologia"],
     isRegistered: true,
+    onlineLink: "https://ufba.br/eventos/blockchain-criptomoedas",
   },
 ];
