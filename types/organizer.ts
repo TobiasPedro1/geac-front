@@ -4,7 +4,7 @@ export interface OrganizerRequestDTO {
 }
 
 export interface OrganizerResponseDTO {
-  id: number;
+  id: string;
   name: string;
   contactEmail: string;
 }

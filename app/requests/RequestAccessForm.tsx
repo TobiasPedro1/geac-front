@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { createOrganizerRequestAction } from "@/app/actions/userActions";
 
 interface Organizer {
-  id: number;
+  id: string;
   name: string;
 }
 
@@ -23,7 +23,7 @@ export default function RequestAccessForm({
   const [success, setSuccess] = useState(false);
 
   const [formData, setFormData] = useState({
-    organizerId: organizers[0]?.id.toString() || "",
+    organizerId: organizers[0]?.id|| "",
     justification: "",
   });
 
@@ -55,7 +55,7 @@ export default function RequestAccessForm({
     try {
       const payload = {
         userId: user.id,
-        organizerId: Number(formData.organizerId),
+        organizerId:formData.organizerId,
         justification: formData.justification,
       };
 
