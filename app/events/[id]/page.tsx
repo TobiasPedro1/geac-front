@@ -77,7 +77,7 @@ export default async function EventDetails({
   if (event.status === EventStatus.COMPLETED) {
     try {
       evaluations = await getEventEvaluations(id);
-      currentUserId = await getCurrentUserId();
+      currentUserId = (await getCurrentUserId()) as string;
       if (currentUserId) {
         hasAlreadyEvaluated = evaluations.some(
           (ev) => String(ev.userId) === currentUserId,
@@ -109,7 +109,8 @@ export default async function EventDetails({
   }).format(now);
 
   const isPastDate = event.date < todayStr;
-  const isPastTime = event.date === todayStr && event.endTime < currentTimeStr;
+  const isPastTime =
+    event.date === todayStr && event.startTime <= currentTimeStr;
   const isPast = isPastDate || isPastTime;
   const isToday = event.date === todayStr;
 

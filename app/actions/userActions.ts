@@ -1,5 +1,6 @@
 "use server";
 
+import { UserData } from "@/types/auth";
 import { cookies } from "next/headers";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
@@ -46,7 +47,7 @@ export async function createOrganizerRequestAction(
   }
 }
 
-export async function getCurrentUserId() {
+export async function getCurrentUserId(complete = false) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -57,8 +58,18 @@ export async function getCurrentUserId() {
     const decodedPayload = Buffer.from(payloadBase64, "base64").toString(
       "utf-8",
     );
-    const { id } = JSON.parse(decodedPayload);
-    return String(id);
+    if (!complete) {
+      const { id } = JSON.parse(decodedPayload);
+      return String(id);
+    }
+    const decoded = JSON.parse(decodedPayload);
+    const user: UserData = {
+      id: decoded.id,
+      name: decoded.name,
+      email: decoded.sub,
+      role: decoded.role,
+    };
+    return user;
   } catch (error) {
     console.error("Erro ao decodificar token:", error);
     return null;
