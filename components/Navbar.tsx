@@ -54,6 +54,12 @@ const NAV_CONFIG = {
       icon: "✅",
       roles: ["ADMIN"],
     },
+    {
+      href: "/admin/student-hours",
+      label: "Horas Alunos",
+      icon: "⏱️",
+      roles: ["ADMIN"],
+    },
   ],
 };
 
