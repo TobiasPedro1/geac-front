@@ -401,8 +401,7 @@ export default function EventManageContent({
                             <span className="capitalize">
                               {event.categoryName}
                             </span>
-                            {event.organizerName &&
-                              ` • ${event.organizerName}`}
+                            {event.organizerName && ` • ${event.organizerName}`}
                           </p>
                         </div>
                       </td>
@@ -500,8 +499,7 @@ export default function EventManageContent({
                       </p>
                       <p className="text-xs text-zinc-500 dark:text-zinc-400 mt-0.5 capitalize">
                         {event.categoryName}
-                        {event.organizerName &&
-                          ` • ${event.organizerName}`}
+                        {event.organizerName && ` • ${event.organizerName}`}
                       </p>
                     </div>
                     {getStatusBadge(event.status)}
@@ -541,9 +539,7 @@ export default function EventManageContent({
                       Editar
                     </button>
                     <button
-                      onClick={() =>
-                        handleDeleteClick(event.id, event.title)
-                      }
+                      onClick={() => handleDeleteClick(event.id, event.title)}
                       className="flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-medium text-red-700 dark:text-red-300 bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 rounded-lg transition-colors"
                     >
                       <Trash2 className="w-3.5 h-3.5" />

@@ -1,7 +1,11 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { EventRequestDTO, EventPatchRequestDTO, EventResponseDTO } from "@/types/event";
+import {
+  EventRequestDTO,
+  EventPatchRequestDTO,
+  EventResponseDTO,
+} from "@/types/event";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
 
@@ -38,7 +42,10 @@ export async function createEventAction(data: EventRequestDTO) {
   }
 }
 
-export async function updateEventAction(id: string, data: EventPatchRequestDTO) {
+export async function updateEventAction(
+  id: string,
+  data: EventPatchRequestDTO,
+) {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 
@@ -131,7 +138,9 @@ export async function getAllEventsAction(): Promise<EventResponseDTO[]> {
   }
 }
 
-export async function getEventByIdAction(id: string): Promise<EventResponseDTO | null> {
+export async function getEventByIdAction(
+  id: string,
+): Promise<EventResponseDTO | null> {
   const cookieStore = await cookies();
   const token = cookieStore.get("token")?.value;
 

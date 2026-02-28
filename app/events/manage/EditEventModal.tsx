@@ -112,9 +112,7 @@ export default function EditEventModal({
   );
 
   const findRequirementIds = useCallback(
-    (
-      reqs: { id: number; description: string }[] | undefined,
-    ): string[] => {
+    (reqs: { id: number; description: string }[] | undefined): string[] => {
       if (!reqs) return [];
       return reqs.map((r) => r.id.toString());
     },
@@ -147,13 +145,11 @@ export default function EditEventModal({
     return {
       title: event.title || "",
       description: event.description || "",
-      startTime: event.startTime
-        ? event.startTime.substring(0, 16)
-        : "",
-      endTime: event.endTime
-        ? event.endTime.substring(0, 16)
-        : "",
-      categoryId: event.categoryId?.toString() || findCategoryId(event.categoryName || ""),
+      startTime: event.startTime ? event.startTime.substring(0, 16) : "",
+      endTime: event.endTime ? event.endTime.substring(0, 16) : "",
+      categoryId:
+        event.categoryId?.toString() ||
+        findCategoryId(event.categoryName || ""),
       locationId: event.location?.id?.toString() || locData.locationId,
       organizerId: organizers[0]?.id.toString() || "",
       requirementIds: findRequirementIds(event.requirements),
@@ -370,7 +366,10 @@ export default function EditEventModal({
         </div>
 
         {/* Body */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-6 max-h-[75vh] overflow-y-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 space-y-6 max-h-[75vh] overflow-y-auto"
+        >
           {error && (
             <div className="p-4 bg-red-50 text-red-600 dark:bg-red-900/30 dark:text-red-400 rounded-xl border border-red-200 dark:border-red-800 flex items-center gap-3">
               <Info className="w-5 h-5 flex-shrink-0" />

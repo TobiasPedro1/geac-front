@@ -15,16 +15,23 @@ import { getAllEventsAction } from "@/app/actions/eventActions";
 export const dynamic = "force-dynamic";
 
 export default async function EventManagePage() {
-  const [categories, locations, requirements, speakers, tags, organizers, events] =
-    await Promise.all([
-      getCategories(),
-      getLocations(),
-      getRequirements(),
-      getSpeakers(),
-      getTags(),
-      getUserOrganizers(),
-      getAllEventsAction(),
-    ]);
+  const [
+    categories,
+    locations,
+    requirements,
+    speakers,
+    tags,
+    organizers,
+    events,
+  ] = await Promise.all([
+    getCategories(),
+    getLocations(),
+    getRequirements(),
+    getSpeakers(),
+    getTags(),
+    getUserOrganizers(),
+    getAllEventsAction(),
+  ]);
 
   return (
     <RoleGuard allowedRoles={["ORGANIZER", "ADMIN"]}>
@@ -59,8 +66,8 @@ export default async function EventManagePage() {
                 </h3>
                 <p className="text-sm text-yellow-700 dark:text-yellow-500 mt-1">
                   Você não está vinculado a nenhuma Organização no momento. Para
-                  gerenciar eventos, você precisa estar cadastrado como membro de
-                  pelo menos uma Organização.
+                  gerenciar eventos, você precisa estar cadastrado como membro
+                  de pelo menos uma Organização.
                 </p>
                 <Link
                   href="/requests"

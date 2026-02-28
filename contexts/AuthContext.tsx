@@ -74,7 +74,12 @@ export function AuthProvider({
   // ✅ MELHORIA 6: Revalidar apenas em rotas específicas
   useEffect(() => {
     // Só revalida em rotas protegidas
-    const protectedRoutes = ["/events", "/certificados", "/meus-eventos", "/events/manage"];
+    const protectedRoutes = [
+      "/events",
+      "/certificados",
+      "/meus-eventos",
+      "/events/manage",
+    ];
     const isProtected = protectedRoutes.some((route) =>
       pathname.startsWith(route),
     );
