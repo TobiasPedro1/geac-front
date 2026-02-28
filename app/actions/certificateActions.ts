@@ -2,11 +2,7 @@
 
 import { cookies } from "next/headers";
 import { Certificate } from "@/types/certificate";
-
-const API_URL =
-  process.env.API_URL_INTERNAL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8080";
+import { API_URL } from "./configs";
 
 export async function getMyCertificates(): Promise<{
   data?: Certificate[];

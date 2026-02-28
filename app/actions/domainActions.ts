@@ -3,10 +3,7 @@
 import { EvaluationResponseDTO } from "@/types/evaluations";
 import { OrganizerResponseDTO } from "@/types/organizer";
 import { cookies } from "next/headers";
-const API_URL =
-  process.env.API_URL_INTERNAL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8080";
+import { API_URL } from "./configs";
 
 async function fetchDomain(endpoint: string) {
   const cookieStore = await cookies();

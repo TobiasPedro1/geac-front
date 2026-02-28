@@ -2,8 +2,7 @@
 
 import { cookies } from "next/headers";
 import { OrganizationEngagementDTO } from "@/types/organizationEngagement";
-
-const API_URL = process.env.API_URL_INTERNAL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { API_URL } from "./configs";
 
 export async function getAllOrganizationEngagement(): Promise<
   OrganizationEngagementDTO[]
@@ -14,22 +13,19 @@ export async function getAllOrganizationEngagement(): Promise<
 
     if (!token) return [];
 
-    const response = await fetch(
-      `${API_URL}/views/organization-engagement`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-        cache: "no-store",
-      }
-    );
+    const response = await fetch(`${API_URL}/views/organization-engagement`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
 
     if (!response.ok) {
       console.error(
         "Erro ao buscar engajamento de organizações:",
-        response.status
+        response.status,
       );
       return [];
     }

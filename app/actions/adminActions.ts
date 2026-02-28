@@ -4,11 +4,7 @@ import { cookies } from "next/headers";
 import { OrganizerRequestDTO } from "@/types/organizer";
 import { revalidatePath } from "next/cache";
 import { PendingRequestDTO } from "@/types/organizationRequests";
-
-const API_URL =
-  process.env.API_URL_INTERNAL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8080";
+import { API_URL } from "./configs";
 
 export async function createOrganizerAction(payload: OrganizerRequestDTO) {
   try {

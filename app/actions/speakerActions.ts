@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
-
+import { API_URL } from "./configs";
 export interface SpeakerQualificationDTO {
   title_name: string;
   institution: string;
@@ -20,11 +20,6 @@ export async function createSpeakerAction(data: CreateSpeakerDTO) {
     if (!data.name || data.name.trim() === "") {
       return { error: "O nome do palestrante é obrigatório." };
     }
-
-    const API_URL =
-      process.env.API_URL_INTERNAL ||
-      process.env.NEXT_PUBLIC_API_URL ||
-      "http://localhost:8080";
 
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;

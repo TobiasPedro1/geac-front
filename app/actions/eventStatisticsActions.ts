@@ -2,8 +2,7 @@
 
 import { cookies } from "next/headers";
 import { EventStatisticsDTO } from "@/types/eventStatistics";
-
-const API_URL = process.env.API_URL_INTERNAL || process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+import { API_URL } from "./configs";
 
 export async function getAllEventStatistics(): Promise<EventStatisticsDTO[]> {
   try {
@@ -22,10 +21,7 @@ export async function getAllEventStatistics(): Promise<EventStatisticsDTO[]> {
     });
 
     if (!response.ok) {
-      console.error(
-        "Erro ao buscar estatísticas de eventos:",
-        response.status
-      );
+      console.error("Erro ao buscar estatísticas de eventos:", response.status);
       return [];
     }
 

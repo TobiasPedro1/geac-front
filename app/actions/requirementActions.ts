@@ -1,11 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-
-const API_URL =
-  process.env.API_URL_INTERNAL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8080";
+import { API_URL } from "./configs";
 
 export async function createRequirementAction(description: string) {
   const cookieStore = await cookies();

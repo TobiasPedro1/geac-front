@@ -34,7 +34,7 @@ export default function OrganizationEngagementContent({
 }: Readonly<OrganizationEngagementContentProps>) {
   const [search, setSearch] = useState("");
   const [sortField, setSortField] = useState<SortField>(
-    "totalParticipantesEngajados"
+    "totalParticipantesEngajados",
   );
   const [sortDirection, setSortDirection] = useState<SortDirection>("desc");
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,18 +44,18 @@ export default function OrganizationEngagementContent({
     const totalOrgs = initialData.length;
     const totalEvents = initialData.reduce(
       (sum, o) => sum + o.totalEventosRealizados,
-      0
+      0,
     );
     const totalEngaged = initialData.reduce(
       (sum, o) => sum + o.totalParticipantesEngajados,
-      0
+      0,
     );
     const avgEventsPerOrg =
       totalOrgs > 0 ? Math.round((totalEvents / totalOrgs) * 10) / 10 : 0;
     const avgEngagedPerOrg =
       totalOrgs > 0 ? Math.round((totalEngaged / totalOrgs) * 10) / 10 : 0;
     const activeOrgs = initialData.filter(
-      (o) => o.totalEventosRealizados > 0
+      (o) => o.totalEventosRealizados > 0,
     ).length;
 
     return {
@@ -72,8 +72,7 @@ export default function OrganizationEngagementContent({
   const topByEngagement = useMemo(() => {
     return [...initialData]
       .sort(
-        (a, b) =>
-          b.totalParticipantesEngajados - a.totalParticipantesEngajados
+        (a, b) => b.totalParticipantesEngajados - a.totalParticipantesEngajados,
       )
       .slice(0, 5);
   }, [initialData]);
@@ -88,18 +87,16 @@ export default function OrganizationEngagementContent({
   // ── Distribuição de atividade ──
   const activityDistribution = useMemo(() => {
     const inactive = initialData.filter(
-      (o) => o.totalEventosRealizados === 0
+      (o) => o.totalEventosRealizados === 0,
     ).length;
     const low = initialData.filter(
-      (o) =>
-        o.totalEventosRealizados >= 1 && o.totalEventosRealizados <= 3
+      (o) => o.totalEventosRealizados >= 1 && o.totalEventosRealizados <= 3,
     ).length;
     const medium = initialData.filter(
-      (o) =>
-        o.totalEventosRealizados >= 4 && o.totalEventosRealizados <= 10
+      (o) => o.totalEventosRealizados >= 4 && o.totalEventosRealizados <= 10,
     ).length;
     const high = initialData.filter(
-      (o) => o.totalEventosRealizados > 10
+      (o) => o.totalEventosRealizados > 10,
     ).length;
     const total = initialData.length || 1;
 
@@ -140,7 +137,7 @@ export default function OrganizationEngagementContent({
     const term = search.toLowerCase().trim();
     if (!term) return initialData;
     return initialData.filter((o) =>
-      o.organizerName.toLowerCase().includes(term)
+      o.organizerName.toLowerCase().includes(term),
     );
   }, [initialData, search]);
 
@@ -149,10 +146,7 @@ export default function OrganizationEngagementContent({
     return [...filtered].sort((a, b) => {
       let comparison = 0;
       if (sortField === "organizerName") {
-        comparison = a.organizerName.localeCompare(
-          b.organizerName,
-          "pt-BR"
-        );
+        comparison = a.organizerName.localeCompare(b.organizerName, "pt-BR");
       } else {
         comparison = a[sortField] - b[sortField];
       }
@@ -164,7 +158,7 @@ export default function OrganizationEngagementContent({
   const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
   const paginated = sorted.slice(
     (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
+    currentPage * PAGE_SIZE,
   );
 
   const handleSearchChange = (value: string) => {
@@ -248,7 +242,7 @@ export default function OrganizationEngagementContent({
                   topByEngagement[0]?.totalParticipantesEngajados || 1;
                 const barWidth = Math.max(
                   (org.totalParticipantesEngajados / max) * 100,
-                  4
+                  4,
                 );
 
                 return (
@@ -295,11 +289,10 @@ export default function OrganizationEngagementContent({
           ) : (
             <div className="space-y-3">
               {topByEvents.map((org, idx) => {
-                const max =
-                  topByEvents[0]?.totalEventosRealizados || 1;
+                const max = topByEvents[0]?.totalEventosRealizados || 1;
                 const barWidth = Math.max(
                   (org.totalEventosRealizados / max) * 100,
-                  4
+                  4,
                 );
 
                 return (
@@ -356,7 +349,7 @@ export default function OrganizationEngagementContent({
                         style={{ width: `${d.pct}%` }}
                         title={`${d.label}: ${d.count} (${d.pct}%)`}
                       />
-                    )
+                    ),
                 )}
               </div>
 
@@ -441,9 +434,7 @@ export default function OrganizationEngagementContent({
                     </th>
                     <th
                       className="px-6 py-3 text-center text-xs font-medium text-zinc-500 uppercase tracking-wider cursor-pointer select-none hover:text-zinc-700 dark:hover:text-zinc-300 transition-colors"
-                      onClick={() =>
-                        handleSort("totalParticipantesEngajados")
-                      }
+                      onClick={() => handleSort("totalParticipantesEngajados")}
                     >
                       <span className="flex items-center justify-center">
                         Participantes Engajados
@@ -461,16 +452,14 @@ export default function OrganizationEngagementContent({
                       org.totalEventosRealizados > 0
                         ? Math.round(
                             org.totalParticipantesEngajados /
-                              org.totalEventosRealizados
+                              org.totalEventosRealizados,
                           )
                         : 0;
 
                     const maxEngaged =
                       sorted.length > 0
                         ? Math.max(
-                            ...sorted.map(
-                              (o) => o.totalParticipantesEngajados
-                            )
+                            ...sorted.map((o) => o.totalParticipantesEngajados),
                           )
                         : 1;
                     const barWidth =
@@ -478,7 +467,7 @@ export default function OrganizationEngagementContent({
                         ? Math.max(
                             (org.totalParticipantesEngajados / maxEngaged) *
                               100,
-                            3
+                            3,
                           )
                         : 0;
 
@@ -546,7 +535,7 @@ export default function OrganizationEngagementContent({
                   org.totalEventosRealizados > 0
                     ? Math.round(
                         org.totalParticipantesEngajados /
-                          org.totalEventosRealizados
+                          org.totalEventosRealizados,
                       )
                     : 0;
 
@@ -621,9 +610,7 @@ export default function OrganizationEngagementContent({
                 </span>
                 <button
                   onClick={() =>
-                    setCurrentPage((prev) =>
-                      Math.min(totalPages, prev + 1)
-                    )
+                    setCurrentPage((prev) => Math.min(totalPages, prev + 1))
                   }
                   disabled={currentPage === totalPages}
                   className="p-2 rounded-md border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:bg-zinc-50 dark:hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"

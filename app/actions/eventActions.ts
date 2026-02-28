@@ -6,11 +6,7 @@ import {
   EventPatchRequestDTO,
   EventResponseDTO,
 } from "@/types/event";
-
-const API_URL =
-  process.env.API_URL_INTERNAL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  "http://localhost:8080";
+import { API_URL } from "./configs";
 
 export async function createEventAction(data: EventRequestDTO) {
   const cookieStore = await cookies();

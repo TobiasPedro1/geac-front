@@ -59,31 +59,29 @@ export default function EventStatisticsContent({
   const metrics = useMemo(() => {
     const totalEvents = initialData.length;
     const activeEvents = initialData.filter(
-      (e) => e.eventStatus === "ACTIVE"
+      (e) => e.eventStatus === "ACTIVE",
     ).length;
     const completedEvents = initialData.filter(
-      (e) => e.eventStatus === "COMPLETED"
+      (e) => e.eventStatus === "COMPLETED",
     ).length;
     const cancelledEvents = initialData.filter(
-      (e) => e.eventStatus === "CANCELLED"
+      (e) => e.eventStatus === "CANCELLED",
     ).length;
 
     const totalInscritos = initialData.reduce(
       (sum, e) => sum + e.totalInscritos,
-      0
+      0,
     );
     const totalPresentes = initialData.reduce(
       (sum, e) => sum + e.totalPresentes,
-      0
+      0,
     );
     const taxaPresenca =
       totalInscritos > 0
         ? Math.round((totalPresentes / totalInscritos) * 100)
         : 0;
 
-    const eventsWithRating = initialData.filter(
-      (e) => e.mediaAvaliacao > 0
-    );
+    const eventsWithRating = initialData.filter((e) => e.mediaAvaliacao > 0);
     const avgRating =
       eventsWithRating.length > 0
         ? eventsWithRating.reduce((sum, e) => sum + e.mediaAvaliacao, 0) /
@@ -167,7 +165,7 @@ export default function EventStatisticsContent({
   const totalPages = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
   const paginated = sorted.slice(
     (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
+    currentPage * PAGE_SIZE,
   );
 
   const handleSearchChange = (value: string) => {
@@ -210,18 +208,21 @@ export default function EventStatisticsContent({
           <Star
             key={i}
             className="w-3.5 h-3.5 fill-amber-400 text-amber-400"
-          />
+          />,
         );
       } else if (i === full && hasHalf) {
         stars.push(
           <Star
             key={i}
             className="w-3.5 h-3.5 fill-amber-400/50 text-amber-400"
-          />
+          />,
         );
       } else {
         stars.push(
-          <Star key={i} className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600" />
+          <Star
+            key={i}
+            className="w-3.5 h-3.5 text-zinc-300 dark:text-zinc-600"
+          />,
         );
       }
     }
@@ -288,7 +289,7 @@ export default function EventStatisticsContent({
                         }}
                         title={`${s.label}: ${s.count} (${s.pct}%)`}
                       />
-                    )
+                    ),
                 )}
               </div>
 
@@ -297,9 +298,7 @@ export default function EventStatisticsContent({
                 {statusDistribution.map((s) => (
                   <div key={s.status} className="text-center">
                     <div className="flex items-center justify-center gap-1.5 mb-1">
-                      <span
-                        className={`w-2.5 h-2.5 rounded-full ${s.color}`}
-                      />
+                      <span className={`w-2.5 h-2.5 rounded-full ${s.color}`} />
                       <span className="text-xs text-zinc-500 dark:text-zinc-400">
                         {s.label}
                       </span>
@@ -336,7 +335,7 @@ export default function EventStatisticsContent({
                 const maxInscritos = topEvents[0]?.totalInscritos || 1;
                 const barWidth = Math.max(
                   (event.totalInscritos / maxInscritos) * 100,
-                  4
+                  4,
                 );
 
                 return (
@@ -470,7 +469,7 @@ export default function EventStatisticsContent({
                     const presenceRate =
                       event.totalInscritos > 0
                         ? Math.round(
-                            (event.totalPresentes / event.totalInscritos) * 100
+                            (event.totalPresentes / event.totalInscritos) * 100,
                           )
                         : 0;
 
@@ -559,7 +558,7 @@ export default function EventStatisticsContent({
                 const presenceRate =
                   event.totalInscritos > 0
                     ? Math.round(
-                        (event.totalPresentes / event.totalInscritos) * 100
+                        (event.totalPresentes / event.totalInscritos) * 100,
                       )
                     : 0;
 
