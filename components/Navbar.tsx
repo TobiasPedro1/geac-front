@@ -35,9 +35,9 @@ const NAV_CONFIG = {
       roles: ["STUDENT", "PROFESSOR", "ORGANIZER"],
     },
     {
-      href: "/events/new",
-      label: "Criar Evento",
-      icon: "➕",
+      href: "/events/manage",
+      label: "Gerenciar Eventos",
+      icon: "📋",
       roles: ["ADMIN", "ORGANIZER"],
     },
   ],

@@ -110,3 +110,19 @@ export interface RegistrationResponseDTO {
   attended: boolean;
   status: string;
 }
+
+export interface EventPatchRequestDTO {
+  title?: string;
+  description?: string;
+  onlineLink?: string;
+  startTime?: string;
+  endTime?: string;
+  workloadHours?: number;
+  maxCapacity?: number;
+  categoryId?: number;
+  requirementIds?: number[];
+  tags?: number[];
+  locationId?: number;
+  speakers?: number[];
+  orgId?: string;
+}
