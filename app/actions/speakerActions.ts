@@ -21,7 +21,10 @@ export async function createSpeakerAction(data: CreateSpeakerDTO) {
       return { error: "O nome do palestrante é obrigatório." };
     }
 
-    const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+    const API_URL =
+      process.env.API_URL_INTERNAL ||
+      process.env.NEXT_PUBLIC_API_URL ||
+      "http://localhost:8080";
 
     const cookieStore = await cookies();
     const token = cookieStore.get("token")?.value;

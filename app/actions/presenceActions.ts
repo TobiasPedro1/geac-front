@@ -4,7 +4,10 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { RegistrationResponseDTO } from "@/types/event";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8080";
+const API_URL =
+  process.env.API_URL_INTERNAL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://127.0.0.1:8080";
 
 export async function getEventRegistrationsAction(
   eventId: string,

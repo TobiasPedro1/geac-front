@@ -5,7 +5,10 @@ import { OrganizerRequestDTO } from "@/types/organizer";
 import { revalidatePath } from "next/cache";
 import { PendingRequestDTO } from "@/types/organizationRequests";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_URL =
+  process.env.API_URL_INTERNAL ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  "http://localhost:8080";
 
 export async function createOrganizerAction(payload: OrganizerRequestDTO) {
   try {
