@@ -99,7 +99,7 @@ export default function StudentHoursContent({
     setCurrentPage(1);
   };
 
-  const SortIcon = ({ field }: { field: SortField }) => {
+  const renderSortIcon = (field: SortField) => {
     if (sortField !== field)
       return <ArrowUpDown className="w-4 h-4 ml-1 opacity-40" />;
     return sortDirection === "asc" ? (
@@ -174,7 +174,7 @@ export default function StudentHoursContent({
                     >
                       <span className="flex items-center">
                         Nome
-                        <SortIcon field="studentName" />
+                        {renderSortIcon("studentName")}
                       </span>
                     </th>
                     <th
@@ -183,7 +183,7 @@ export default function StudentHoursContent({
                     >
                       <span className="flex items-center justify-center">
                         Certificados
-                        <SortIcon field="totalCertificadosEmitidos" />
+                        {renderSortIcon("totalCertificadosEmitidos")}
                       </span>
                     </th>
                     <th
@@ -192,7 +192,7 @@ export default function StudentHoursContent({
                     >
                       <span className="flex items-center justify-center">
                         Horas Acumuladas
-                        <SortIcon field="totalHorasAcumuladas" />
+                        {renderSortIcon("totalHorasAcumuladas")}
                       </span>
                     </th>
                   </tr>

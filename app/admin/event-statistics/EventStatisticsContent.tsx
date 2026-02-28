@@ -188,7 +188,7 @@ export default function EventStatisticsContent({
     setCurrentPage(1);
   };
 
-  const SortIcon = ({ field }: { field: SortField }) => {
+  const renderSortIcon = (field: SortField) => {
     if (sortField !== field)
       return <ArrowUpDown className="w-4 h-4 ml-1 opacity-40" />;
     return sortDirection === "asc" ? (
@@ -426,7 +426,7 @@ export default function EventStatisticsContent({
                     >
                       <span className="flex items-center">
                         Evento
-                        <SortIcon field="eventTitle" />
+                        {renderSortIcon("eventTitle")}
                       </span>
                     </th>
                     <th className="px-6 py-3 text-center text-xs font-medium text-zinc-500 uppercase tracking-wider">
@@ -438,7 +438,7 @@ export default function EventStatisticsContent({
                     >
                       <span className="flex items-center justify-center">
                         Inscritos
-                        <SortIcon field="totalInscritos" />
+                        {renderSortIcon("totalInscritos")}
                       </span>
                     </th>
                     <th
@@ -447,7 +447,7 @@ export default function EventStatisticsContent({
                     >
                       <span className="flex items-center justify-center">
                         Presentes
-                        <SortIcon field="totalPresentes" />
+                        {renderSortIcon("totalPresentes")}
                       </span>
                     </th>
                     <th
@@ -456,7 +456,7 @@ export default function EventStatisticsContent({
                     >
                       <span className="flex items-center justify-center">
                         Avaliação
-                        <SortIcon field="mediaAvaliacao" />
+                        {renderSortIcon("mediaAvaliacao")}
                       </span>
                     </th>
                     <th className="px-6 py-3 text-center text-xs font-medium text-zinc-500 uppercase tracking-wider">

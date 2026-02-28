@@ -176,7 +176,7 @@ export default function OrganizationEngagementContent({
     setCurrentPage(1);
   };
 
-  const SortIcon = ({ field }: { field: SortField }) => {
+  const renderSortIcon = (field: SortField) => {
     if (sortField !== field)
       return <ArrowUpDown className="w-4 h-4 ml-1 opacity-40" />;
     return sortDirection === "asc" ? (
@@ -420,7 +420,7 @@ export default function OrganizationEngagementContent({
                     >
                       <span className="flex items-center">
                         Organização
-                        <SortIcon field="organizerName" />
+                        {renderSortIcon("organizerName")}
                       </span>
                     </th>
                     <th
@@ -429,7 +429,7 @@ export default function OrganizationEngagementContent({
                     >
                       <span className="flex items-center justify-center">
                         Eventos Realizados
-                        <SortIcon field="totalEventosRealizados" />
+                        {renderSortIcon("totalEventosRealizados")}
                       </span>
                     </th>
                     <th
@@ -438,7 +438,7 @@ export default function OrganizationEngagementContent({
                     >
                       <span className="flex items-center justify-center">
                         Participantes Engajados
-                        <SortIcon field="totalParticipantesEngajados" />
+                        {renderSortIcon("totalParticipantesEngajados")}
                       </span>
                     </th>
                     <th className="px-6 py-3 text-center text-xs font-medium text-zinc-500 uppercase tracking-wider">

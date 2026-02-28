@@ -7,7 +7,7 @@ import {
   deleteEventAction,
   getEventByIdAction,
 } from "@/app/actions/eventActions";
-import { EventResponseDTO, EventStatus } from "@/types/event";
+import { EventResponseDTO } from "@/types/event";
 import { OrganizerResponseDTO } from "@/types/organizer";
 import EditEventModal from "./EditEventModal";
 import DeleteConfirmModal from "./DeleteConfirmModal";
