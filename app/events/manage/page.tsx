@@ -11,6 +11,8 @@ import {
   getUserOrganizers,
 } from "@/app/actions/domainActions";
 import { getAllEventsAction } from "@/app/actions/eventActions";
+import { UserData } from "@/types/auth";
+import { getCurrentUserId } from "@/app/actions/userActions";
 
 export const dynamic = "force-dynamic";
 
@@ -23,6 +25,7 @@ export default async function EventManagePage() {
     tags,
     organizers,
     events,
+    user,
   ] = await Promise.all([
     getCategories(),
     getLocations(),
@@ -31,6 +34,7 @@ export default async function EventManagePage() {
     getTags(),
     getUserOrganizers(),
     getAllEventsAction(),
+    getCurrentUserId(true),
   ]);
 
   return (
@@ -57,7 +61,8 @@ export default async function EventManagePage() {
             </div>
           </div>
 
-          {organizers.length === 0 ? (
+          {(organizers.length === 0 && !user) ||
+          !["ADMIN", "ORGANIZER"].includes((user as UserData).role) ? (
             <div className="p-6 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800/50 rounded-xl flex items-start gap-4">
               <AlertTriangle className="w-6 h-6 text-yellow-600 dark:text-yellow-500 flex-shrink-0" />
               <div>
