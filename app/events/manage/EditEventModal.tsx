@@ -17,6 +17,7 @@ import {
   Settings,
   X,
   Building,
+  BellRingIcon,
 } from "lucide-react";
 
 interface EditEventModalProps {
@@ -42,6 +43,7 @@ interface EditEventModalProps {
   organizers: OrganizerResponseDTO[];
   onClose: () => void;
   onSuccess: () => void;
+  daysBeforeNotify: string;
 }
 
 export default function EditEventModal({
@@ -53,6 +55,7 @@ export default function EditEventModal({
   tags,
   speakers,
   organizers,
+  daysBeforeNotify,
   onClose,
   onSuccess,
 }: Readonly<EditEventModalProps>) {
@@ -159,6 +162,7 @@ export default function EditEventModal({
       onlineLink: event.onlineLink || "",
       isOnline,
       speakers: findSpeakerIds(event.speakers || []),
+      daysBeforeNotify: "",
     };
   }, [
     event,
@@ -569,21 +573,37 @@ export default function EditEventModal({
             </div>
 
             <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800">
-              <div className="flex items-center gap-3 mb-4 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700 w-fit">
-                <input
-                  type="checkbox"
-                  id="editIsOnline"
-                  name="isOnline"
-                  checked={formData.isOnline}
-                  onChange={handleChange}
-                  className="w-4 h-4 text-blue-600 rounded border-zinc-300 focus:ring-blue-500"
-                />
-                <label
-                  htmlFor="editIsOnline"
-                  className="text-sm font-medium text-zinc-900 dark:text-white cursor-pointer select-none"
-                >
-                  Este evento será transmitido Online
-                </label>
+              <div className="flex justify-between mb-4 mt-4">
+                <div className="flex items-center gap-3 mb-4 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700 w-fit">
+                  <input
+                    type="checkbox"
+                    id="editIsOnline"
+                    name="isOnline"
+                    checked={formData.isOnline}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-blue-600 rounded border-zinc-300 focus:ring-blue-500"
+                  />
+                  <label
+                    htmlFor="editIsOnline"
+                    className="text-sm font-medium text-zinc-900 dark:text-white cursor-pointer select-none"
+                  >
+                    Este evento será transmitido Online
+                  </label>
+                </div>
+                <div className="flex flex-col items-center  mb-4">
+                  <label className={labelClassName}>
+                    <BellRingIcon className="w-4 h-4 text-zinc-500" /> Notificar
+                  </label>
+                  <select
+                    name="daysBeforeNotify"
+                    value={formData.daysBeforeNotify}
+                    onChange={handleChange}
+                    className={`${inputClassName} w-auto`}
+                  >
+                    <option value="ONE_DAY_BEFORE">1 dia antes</option>
+                    <option value="ONE_WEEK_BEFORE">1 semana antes</option>
+                  </select>
+                </div>
               </div>
 
               {formData.isOnline ? (

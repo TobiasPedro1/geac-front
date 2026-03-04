@@ -19,6 +19,7 @@ import {
   Plus,
   X,
   Building,
+  BellRingIcon,
 } from "lucide-react";
 import { createRequirementAction } from "../actions/requirementActions";
 import { OrganizerResponseDTO } from "@/types/organizer";
@@ -42,6 +43,7 @@ interface CreateEventFormProps {
   tags: { id: number; name: string }[];
   speakers: { id: number; name: string }[];
   organizers: Array<OrganizerResponseDTO>;
+  daysBeforeNotify: string;
 }
 
 export default function CreateEventForm({
@@ -65,7 +67,6 @@ export default function CreateEventForm({
   const [selectedCampus, setSelectedCampus] = useState(
     locations[0]?.campus || "",
   );
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -81,6 +82,7 @@ export default function CreateEventForm({
     onlineLink: "",
     isOnline: false,
     speakers: [] as string[],
+    daysBeforeNotify: "ONE_DAY_BEFORE",
   });
 
   const inputClassName =
@@ -246,6 +248,7 @@ export default function CreateEventForm({
         tags: formData.tags.map(Number),
         speakers: formData.speakers.map(Number),
         orgId: formData.organizerId,
+        daysBeforeNotify: formData.daysBeforeNotify,
       };
 
       const result = await createEventAction(payload);
@@ -538,21 +541,38 @@ export default function CreateEventForm({
             </div>
 
             <div className="pt-4 border-t border-zinc-100 dark:border-zinc-800">
-              <div className="flex items-center gap-3 mb-4 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700 w-fit">
-                <input
-                  type="checkbox"
-                  id="isOnline"
-                  name="isOnline"
-                  checked={formData.isOnline}
-                  onChange={handleChange}
-                  className="w-4 h-4 text-blue-600 rounded border-zinc-300 focus:ring-blue-500"
-                />
-                <label
-                  htmlFor="isOnline"
-                  className="text-sm font-medium text-zinc-900 dark:text-white cursor-pointer select-none"
-                >
-                  Este evento será transmitido Online
-                </label>
+              <div className="flex justify-between mb-4 mt-4">
+                <div className="flex items-center gap-3 mb-4 p-3 bg-zinc-50 dark:bg-zinc-800/50 rounded-lg border border-zinc-200 dark:border-zinc-700 w-fit">
+                  <input
+                    type="checkbox"
+                    id="isOnline"
+                    name="isOnline"
+                    checked={formData.isOnline}
+                    onChange={handleChange}
+                    className="w-4 h-4 text-blue-600 rounded border-zinc-300 focus:ring-blue-500"
+                  />
+                  <label
+                    htmlFor="isOnline"
+                    className="text-sm font-medium text-zinc-900 dark:text-white cursor-pointer select-none"
+                  >
+                    Este evento será transmitido Online
+                  </label>
+                </div>
+
+                <div className="flex flex-col items-center  mb-4">
+                  <label className={labelClassName}>
+                    <BellRingIcon className="w-4 h-4 text-zinc-500" /> Notificar
+                  </label>
+                  <select
+                    name="daysBeforeNotify"
+                    value={formData.daysBeforeNotify}
+                    onChange={handleChange}
+                    className={`${inputClassName} w-auto`}
+                  >
+                    <option value="ONE_DAY_BEFORE">1 dia antes</option>
+                    <option value="ONE_WEEK_BEFORE">1 semana antes</option>
+                  </select>
+                </div>
               </div>
 
               {formData.isOnline ? (

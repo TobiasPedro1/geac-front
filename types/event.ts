@@ -57,6 +57,7 @@ export interface EventRequestDTO {
   tags: number[];
   speakers: number[];
   orgId: string;
+  daysBeforeNotify?: string;
 }
 
 export interface EventResponseDTO {
@@ -82,6 +83,7 @@ export interface EventResponseDTO {
   isRegistered: boolean;
   userRegistrationStatus: string;
   userAttended: boolean;
+  daysBeforeNotify?: string;
 }
 
 export interface LocationResponseDTO {
