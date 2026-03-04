@@ -10,13 +10,18 @@ import {
   getTags,
   getUserOrganizers,
 } from "@/app/actions/domainActions";
-import { getAllEventsAction } from "@/app/actions/eventActions";
+import {
+  getAllEventsAction,
+  getAllUserOrgsEventsAction,
+} from "@/app/actions/eventActions";
 import { UserData } from "@/types/auth";
 import { getCurrentUserId } from "@/app/actions/userActions";
 
 export const dynamic = "force-dynamic";
 
 export default async function EventManagePage() {
+  const user = await getCurrentUserId(true);
+  const isAdmin = (user as UserData)?.role === "ADMIN";
   const [
     categories,
     locations,
@@ -25,7 +30,6 @@ export default async function EventManagePage() {
     tags,
     organizers,
     events,
-    user,
   ] = await Promise.all([
     getCategories(),
     getLocations(),
@@ -33,8 +37,7 @@ export default async function EventManagePage() {
     getSpeakers(),
     getTags(),
     getUserOrganizers(),
-    getAllEventsAction(),
-    getCurrentUserId(true),
+    isAdmin ? getAllEventsAction() : getAllUserOrgsEventsAction(),
   ]);
 
   return (

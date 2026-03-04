@@ -597,6 +597,7 @@ export default function EventManageContent({
         tags={tags}
         speakers={speakers}
         organizers={organizers}
+        daysBeforeNotify=""
         onClose={() => {
           setEditModalOpen(false);
           setEditingEvent(null);

@@ -136,6 +136,36 @@ export async function getAllEventsAction(): Promise<EventResponseDTO[]> {
     return [];
   }
 }
+export async function getAllUserOrgsEventsAction(): Promise<
+  EventResponseDTO[]
+> {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+
+  if (!token) {
+    return [];
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/events/myorgsevents`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      return [];
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro ao buscar eventos:", error);
+    return [];
+  }
+}
 
 export async function getEventByIdAction(
   id: string,
