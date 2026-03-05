@@ -4,6 +4,7 @@ import { cookies } from "next/headers";
 import { OrganizerRequestDTO } from "@/types/organizer";
 import { revalidatePath } from "next/cache";
 import { PendingRequestDTO } from "@/types/organizationRequests";
+import { OrganizerResponseDTO } from "@/types/organizer";
 import { API_URL } from "./configs";
 
 export async function createOrganizerAction(payload: OrganizerRequestDTO) {
@@ -31,7 +32,10 @@ export async function createOrganizerAction(payload: OrganizerRequestDTO) {
       };
     }
 
-    return { success: true };
+    const data = await response.json();
+    revalidatePath("/admin/organizers");
+
+    return { success: true, data };
   } catch (error) {
     console.error("Erro na createOrganizerAction:", error);
     return { error: "Erro de conexão com o servidor." };
@@ -135,5 +139,86 @@ export async function getPendingRequests(): Promise<PendingRequestDTO[]> {
   } catch (error) {
     console.error("Erro na getPendingRequests:", error);
     return [];
+  }
+}
+
+export async function getOrganizersAction(): Promise<OrganizerResponseDTO[]> {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+    if (!token) return [];
+
+    const response = await fetch(`${API_URL}/organizers`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+
+    if (!response.ok) return [];
+
+    return await response.json();
+  } catch (error) {
+    console.error("Erro na getOrganizersAction:", error);
+    return [];
+  }
+}
+
+export async function updateOrganizerAction(id: string, payload: OrganizerRequestDTO) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+    if (!token) return { error: "Acesso negado. Token não encontrado." };
+
+    const response = await fetch(`${API_URL}/organizers/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      return { error: errorData?.message || `Erro no servidor: ${response.status}` };
+    }
+
+    revalidatePath("/admin/organizers");
+    return { success: true };
+  } catch (error) {
+    console.error("Erro na updateOrganizerAction:", error);
+    return { error: "Erro de conexão com o servidor." };
+  }
+}
+
+export async function deleteOrganizerAction(id: string) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("token")?.value;
+
+    if (!token) return { error: "Acesso negado. Token não encontrado." };
+
+    const response = await fetch(`${API_URL}/organizers/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      return { error: errorData?.message || `Erro no servidor: ${response.status}` };
+    }
+
+    revalidatePath("/admin/organizers");
+    return { success: true };
+  } catch (error) {
+    console.error("Erro na deleteOrganizerAction:", error);
+    return { error: "Erro de conexão com o servidor." };
   }
 }

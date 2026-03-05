@@ -6,8 +6,28 @@ import { useState, useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 import { NotificationBell } from "./NotificationBell";
 
-// ✅ CONFIGURAÇÃO CENTRALIZADA - Mude aqui para adicionar/remover itens
-const NAV_CONFIG = {
+type SubNavItem = {
+  href: string;
+  label: string;
+  icon: string;
+};
+
+type NavItem = {
+  href?: string;
+  label: string;
+  icon: string;
+  roles?: string[];
+  subItems?: SubNavItem[];
+};
+
+type NavConfigType = {
+  public: NavItem[];
+  authenticated: NavItem[];
+  adminOnly: NavItem[];
+};
+
+// CONFIGURAÇÃO CENTRALIZADA - Mude aqui para adicionar/remover itens
+const NAV_CONFIG: NavConfigType = {
   public: [{ href: "/", label: "Início", icon: "🏠" }],
   authenticated: [
     {
@@ -43,8 +63,14 @@ const NAV_CONFIG = {
   ],
   adminOnly: [
     {
-      href: "/admin/register-org",
-      label: "Cadastrar ORG",
+      href: "/admin/users",
+      label: "Gerenciar Usuários",
+      icon: "👥",
+      roles: ["ADMIN"],
+    },
+    {
+      href: "/admin/organizers",
+      label: "Gerenciar Orgs",
       icon: "🏢",
       roles: ["ADMIN"],
     },
@@ -55,22 +81,14 @@ const NAV_CONFIG = {
       roles: ["ADMIN"],
     },
     {
-      href: "/admin/student-hours",
-      label: "Horas Alunos",
-      icon: "⏱️",
+      label: "Relatórios",
+      icon: "📈",
       roles: ["ADMIN"],
-    },
-    {
-      href: "/admin/event-statistics",
-      label: "Estatísticas",
-      icon: "📊",
-      roles: ["ADMIN"],
-    },
-    {
-      href: "/admin/org-engagement",
-      label: "Engajamento",
-      icon: "🤝",
-      roles: ["ADMIN"],
+      subItems: [
+        { href: "/admin/student-hours", label: "Horas Alunos", icon: "⏱️" },
+        { href: "/admin/event-statistics", label: "Estatísticas", icon: "📊" },
+        { href: "/admin/org-engagement", label: "Engajamento", icon: "🤝" },
+      ],
     },
   ],
 };
@@ -120,7 +138,7 @@ export function Navbar() {
     }
   };
 
-  // ✅ Filtra itens baseado em autenticação e role
+  // Filtra itens baseado em autenticação e role
   const getVisibleItems = () => {
     if (!isAuthenticated) {
       return NAV_CONFIG.public;
@@ -137,7 +155,7 @@ export function Navbar() {
 
   const visibleItems = getVisibleItems();
 
-  // ✅ Verifica se link está ativo
+  // Verifica se link está ativo
   const isActiveLink = (href: string) => {
     if (href === "/") {
       return pathname === "/";
@@ -162,24 +180,86 @@ export function Navbar() {
 
             {/* Desktop Navigation */}
             <div className="hidden md:ml-10 md:flex md:space-x-4">
-              {visibleItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`
-                    px-3 py-2 rounded-md text-sm font-medium transition-all duration-200
-                    flex items-center gap-2
-                    ${
-                      isActiveLink(item.href)
-                        ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                        : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-400"
-                    }
-                  `}
-                >
-                  <span>{item.icon}</span>
-                  <span>{item.label}</span>
-                </Link>
-              ))}
+              {visibleItems.map((item, index) => {
+                // Se o item tiver subItems, renderiza um Dropdown que abre no hover
+                if (item.subItems) {
+                  const isAnySubActive = item.subItems.some((sub) =>
+                    isActiveLink(sub.href),
+                  );
+                  return (
+                    <div key={index} className="relative group flex items-center">
+                      <button
+                        className={`
+                          px-3 py-2 rounded-md text-sm font-medium transition-all duration-200
+                          flex items-center gap-2
+                          ${
+                            isAnySubActive
+                              ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
+                              : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-400"
+                          }
+                        `}
+                      >
+                        <span>{item.icon}</span>
+                        <span>{item.label}</span>
+                        <svg
+                          className="w-4 h-4 ml-1 opacity-70 group-hover:rotate-180 transition-transform duration-200"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      </button>
+
+                      {/* Menu Dropdown - Visível no hover usando a classe 'group-hover:block' */}
+                      <div className="absolute top-full left-0 mt-1 w-56 bg-white dark:bg-zinc-800 rounded-lg shadow-xl border border-zinc-200 dark:border-zinc-700 py-2 hidden group-hover:block transition-all z-50">
+                        {item.subItems.map((subItem) => (
+                          <Link
+                            key={subItem.href}
+                            href={subItem.href}
+                            className={`
+                              flex items-center gap-3 px-4 py-2 text-sm transition-colors
+                              ${
+                                isActiveLink(subItem.href)
+                                  ? "bg-blue-50 dark:bg-blue-900/20 text-blue-700 dark:text-blue-400 font-medium"
+                                  : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-700 hover:text-blue-600 dark:hover:text-blue-400"
+                              }
+                            `}
+                          >
+                            <span>{subItem.icon}</span>
+                            <span>{subItem.label}</span>
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  );
+                }
+
+                // Renderização de links normais
+                return (
+                  <Link
+                    key={item.href || index}
+                    href={item.href!}
+                    className={`
+                      px-3 py-2 rounded-md text-sm font-medium transition-all duration-200
+                      flex items-center gap-2
+                      ${
+                        isActiveLink(item.href!)
+                          ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
+                          : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-blue-600 dark:hover:text-blue-400"
+                      }
+                    `}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.label}</span>
+                  </Link>
+                );
+              })}
             </div>
           </div>
 
@@ -401,23 +481,59 @@ export function Navbar() {
             </div>
 
             {/* Mobile navigation links */}
-            {visibleItems.map((item) => (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`
-                  flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors
-                  ${
-                    isActiveLink(item.href)
-                      ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
-                      : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
-                  }
-                `}
-              >
-                <span className="text-xl">{item.icon}</span>
-                <span>{item.label}</span>
-              </Link>
-            ))}
+            {visibleItems.map((item, index) => {
+              // Renderização dos SubItems no Mobile (Ficam identados abaixo do título)
+              if (item.subItems) {
+                return (
+                  <div key={index} className="space-y-1">
+                    <div className="flex items-center gap-3 px-4 py-3 text-base font-medium text-zinc-900 dark:text-white">
+                      <span className="text-xl">{item.icon}</span>
+                      <span>{item.label}</span>
+                    </div>
+                    <div className="pl-6 space-y-1 border-l-2 border-zinc-200 dark:border-zinc-700 ml-6">
+                      {item.subItems.map((subItem) => (
+                        <Link
+                          key={subItem.href}
+                          href={subItem.href}
+                          onClick={() => setIsMobileMenuOpen(false)}
+                          className={`
+                            flex items-center gap-3 px-4 py-2 text-sm font-medium transition-colors rounded-lg
+                            ${
+                              isActiveLink(subItem.href)
+                                ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
+                                : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white"
+                            }
+                          `}
+                        >
+                          <span className="text-lg">{subItem.icon}</span>
+                          <span>{subItem.label}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                );
+              }
+
+              // Links normais Mobile
+              return (
+                <Link
+                  key={item.href || index}
+                  href={item.href!}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={`
+                    flex items-center gap-3 px-4 py-3 rounded-lg text-base font-medium transition-colors
+                    ${
+                      isActiveLink(item.href!)
+                        ? "bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400"
+                        : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+                    }
+                  `}
+                >
+                  <span className="text-xl">{item.icon}</span>
+                  <span>{item.label}</span>
+                </Link>
+              );
+            })}
 
             {/* Mobile logout button */}
             <button
